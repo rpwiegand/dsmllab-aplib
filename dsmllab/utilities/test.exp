@@ -1,0 +1,6 @@
+floatExample=2.1
+doubleExample=2.2
+boolExample=true
+strExample=bar
+daExample={3.1415,6.28,1.0,2.71828}
+notes=This is a test illustrating how ExperimentParameters can be subclassed.

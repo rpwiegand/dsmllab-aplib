@@ -1,0 +1,72 @@
+Author:        R. Paul Wiegand
+Date Created:  8/17/2005
+Last Updated:  9/14/2021
+
+This project implements a slightly augmented form of Bill & Dina
+Spears' work on physicomimetic models for controlling teams of agents.
+This is a generic MASON package, one is meant to use it to construct
+more elaborate simulations.
+
+At present, the project should contain the following files:
+
+ ./apmodel
+   ./APExperimentParameters.java  Loads high-level experiment params,
+                                  points to AP model params file,
+                                  tells what measures to load, etc. 
+   ./APModel.java                 Main model code
+   ./APModelWithUI.java           Code for visualizing the model
+   ./APParser.java                Code for parsing detialed AP model
+                                  parameters for the simulation.
+                                  Defines particle types & interactions
+   ./AbstractMeasure.java         Abs base class for defining measures
+                                  for the simulation
+   ./ForceInteractionModel.java   Graph-based model for defining
+                                   interactions of forces in system
+   ./ForceLaw.java                Base class for implementing force law
+   ./LennardJonesForceLaw.java    Implements LJ physics
+   ./MeasureRegistry.java         A registry for holding and dealing
+                                  with any measures
+   ./NewtonianForceLaw.java       Implements Newtonian physics
+   ./Parsable.java                Interface defining objects parsable to
+                                  APParser
+   ./Particle.java                Base class for all agents
+
+
+Also included are the following:
+   ./README                       This file.
+   ./apmodel.exp                  Experiment file for the APModel
+   ./apmodel.params               Simple example model parameters file
+   ./apmodel2.params              Moreo complicated example
+
+The simulation is uses the MASON toolkit by Sean Luke (ver. 10, I
+think).  I have placed it in a package called dsmllab for now.  It
+relies on another package, dsmllab.utilities.  You should setup your
+classpath appropriately.  The visualization program can be run at the
+command-line using the following command:
+
+  java dsmllab.apmodel.APModelWithUI
+
+To run the model using specific parameters, specify the name of the
+parameter file in the experiment file, and specify which experiment
+file to use at the command line.  That is, create a file with a .exp
+extension, which contains (at least) the parameter:
+
+  apParamFileName=[parameter filename]
+
+The program can then be run by typing the line below.  The program
+will run as before, but the UI parameters will be ignored.  To see
+what the program believes are the parameters, you can press the
+"Refresh" button on the "Model" tab in the control window.
+Subsequently changing the parameters will (for the most part) have no
+effect.
+
+  java dsmllab.apmodel.APModelWithUI [experiment filename]
+
+You can also run it at the command line, without the display as
+follows.
+
+  java dsmllab.apmodel.APModel [experiment filename]
+
+
+
+

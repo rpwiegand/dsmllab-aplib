@@ -32,14 +32,14 @@ import java.util.*;
 
 public class ForceInteractionModel
 {
-  protected Map<String, Integer> typeTable;
+  protected Map typeTable;
   protected int numParticleTypes;
   protected ForceLaw interactions[][];  // adjacency matrix for graph
   protected int maxParticleSubtype = 0;
 
   /** Constructer creates the internal map and resets the particle type counter.*/
   public ForceInteractionModel() {
-    typeTable = new HashMap<String, Integer>();
+    typeTable = new HashMap();
     numParticleTypes = 0;
     maxParticleSubtype = 0;
   }//consutrctor()
@@ -61,7 +61,7 @@ public class ForceInteractionModel
     if (val != null) // Particle type is not already in the map
       particleType = ((Integer)val).intValue();
     else             // Particle type was already in the map
-      typeTable.put(key, Integer.valueOf(numParticleTypes++));
+      typeTable.put(key,new Integer(numParticleTypes++));
         
     return particleType;
   }//registerParticle

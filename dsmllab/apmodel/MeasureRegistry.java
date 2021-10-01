@@ -14,7 +14,7 @@ import java.util.Vector;
  */
 
 public class MeasureRegistry {
-  protected HashMap<String, AbstractMeasure> registry = new HashMap<String, AbstractMeasure>();
+  protected HashMap registry = new HashMap();
   public Particle particles[];
 
   public void registerMeasure(AbstractMeasure measure) {
@@ -24,7 +24,7 @@ public class MeasureRegistry {
 
 
   public void scheduleAllMeasures(final APModel ap) {
-    Vector<AbstractMeasure> measures = new Vector<AbstractMeasure>(registry.values());
+    Vector measures = new Vector(registry.values());
     for (int i=0; i<measures.size(); i++) {
       AbstractMeasure msr = (AbstractMeasure)measures.get(i);
       ap.schedule.scheduleRepeating(msr);
@@ -41,7 +41,7 @@ public class MeasureRegistry {
 
 
   public void tallyAllMeasures() {
-    Vector<AbstractMeasure> measures = new Vector<AbstractMeasure>(registry.values());
+    Vector measures = new Vector(registry.values());
     for (int i=0; i<measures.size(); i++) {
       AbstractMeasure msr = (AbstractMeasure)measures.get(i);
       msr.tallyTrial();
@@ -50,7 +50,7 @@ public class MeasureRegistry {
 
 
   public void reportAllAggregates() {
-    Vector<AbstractMeasure> measures = new Vector<AbstractMeasure>(registry.values());
+    Vector measures = new Vector(registry.values());
     for (int i=0; i<measures.size(); i++) {
       AbstractMeasure msr = (AbstractMeasure)measures.get(i);
       msr.reportAggregate();
@@ -58,7 +58,7 @@ public class MeasureRegistry {
   }
 
   public void reportAllCurrentTrial() {
-    Vector<AbstractMeasure> measures = new Vector<AbstractMeasure>(registry.values());
+    Vector measures = new Vector(registry.values());
     for (int i=0; i<measures.size(); i++) {
       AbstractMeasure msr = (AbstractMeasure)measures.get(i);
       msr.reportCurrentTrial();
@@ -102,7 +102,7 @@ public class MeasureRegistry {
   protected void populateParticleLists(final APModel ap) {
     double distance = 5.0*Math.max(Math.abs(ap.XMAX - ap.XMIN),Math.abs(ap.YMAX-ap.YMIN));
     Double2D center = new Double2D(Math.abs(ap.XMAX - ap.XMIN)/2.0,Math.abs(ap.YMAX - ap.YMIN)/2.0);
-    Bag allParticles = ap.environment.getNeighborsWithinDistance(center,distance);
+    Bag allParticles = ap.environment.getObjectsWithinDistance(center,distance);
 
     // Count the types of particles
     particles = new Particle[allParticles.numObjs];

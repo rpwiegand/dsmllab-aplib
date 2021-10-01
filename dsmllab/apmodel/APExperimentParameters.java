@@ -10,7 +10,7 @@ import java.lang.Class;
 import java.util.*;
 import java.io.*;
 
-import dsmllab.utilities.ExperimentParameters;
+import ncarai.utilities.ExperimentParameters;
 
 
 /**
@@ -66,8 +66,8 @@ public class APExperimentParameters extends ExperimentParameters implements Seri
       APModel.measures = new MeasureRegistry();
       for (int i=0; i<measureIDs.length; i++) {
 	try {
-	  Class<?> c = Class.forName("dsmllab.apmodel." + measureIDs[i]);
-	  AbstractMeasure msr = (AbstractMeasure)c.getDeclaredConstructor().newInstance();
+	  Class c = Class.forName("ncarai.apmodel." + measureIDs[i]);
+	  AbstractMeasure msr = (AbstractMeasure)c.newInstance();
           APModel.measures.registerMeasure(msr);
 	}//try
 	catch (Exception ex) {

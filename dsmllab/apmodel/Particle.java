@@ -84,7 +84,7 @@ public class Particle extends SimplePortrayal2D implements Steppable, Parsable {
 
 
   protected void loadFromProperties(Properties properties) {
-    this.particleSubtype = (int)( Integer.parseInt(properties.getProperty("subtype","0")) );
+    this.particleSubtype = (int)(new Double(properties.getProperty("subtype","0"))).doubleValue();
     this.mass = getParamFromProp(properties,"mass",mass,0.001,100000.0);
     this.friction = getParamFromProp(properties,"friction",friction,0.0,1.0);
     this.diameter = getParamFromProp(properties,"diamter",diameter,0.01,1000.0);
@@ -100,21 +100,21 @@ public class Particle extends SimplePortrayal2D implements Steppable, Parsable {
     return new Particle();
   }
 
-  public Vector<Parsable> createCopiesFromParse(String instantiationValues) {
+  public Vector createCopiesFromParse(String instantiationValues) {
     Properties properties = new Properties();
     try {
-      //StringBufferInputStream sbis = new StringBufferInputStream(instantiationValues);
-      StringReader sr = new StringReader(instantiationValues);
-      //BufferedInputStream bis = new BufferedInputStream(sr);
-      properties.load(sr);//bis);
+      StringBufferInputStream sbis = new StringBufferInputStream(instantiationValues);
+      //       StringReader sr = new StringReader(instantiationValues);
+      //       BufferedInputStream bis = new BufferedInputStream(sr);
+      properties.load(sbis);
     }
     catch (Exception e) {
       System.err.println("Error while creating from the parse of " + getClass().getName() + ": " + e);
     }
 
-    int number =(int)(Integer.valueOf(properties.getProperty("number","1")) );
+    int number =(int)(new Double(properties.getProperty("number","1"))).doubleValue();
     int subtype = -1;
-    Vector<Parsable> particles = new Vector<Parsable>(number);
+    Vector particles = new Vector(number);
     for (int i=0; i<number; i++) {
       Particle particle = newParticleInstance();
       particle.loadFromProperties(properties);
@@ -167,7 +167,7 @@ public class Particle extends SimplePortrayal2D implements Steppable, Parsable {
 
   protected double getParamFromProp(Properties properties, String key, 
                                     double defaultVal, double lb, double ub) {
-    double rawValue = ( Double.parseDouble(properties.getProperty(key,"" + defaultVal)) );
+    double rawValue = (new Double(properties.getProperty(key,"" + defaultVal))).doubleValue();
 
     if (rawValue < lb) rawValue = lb;
     if (rawValue > ub) rawValue = ub;
@@ -240,7 +240,7 @@ public class Particle extends SimplePortrayal2D implements Steppable, Parsable {
     double forceX = 0;
     double forceY = 0;
     double maxVision = forceInteractionModel.getMaxEffectRangeFrom(this);
-    Bag nearbyParticles = ap.environment.getNeighborsWithinDistance(particleLocation,maxVision);
+    Bag nearbyParticles = ap.environment.getObjectsWithinDistance(particleLocation,maxVision);
 
     if (nearbyParticles != null)
       for (int i=0; i<nearbyParticles.numObjs; i++)

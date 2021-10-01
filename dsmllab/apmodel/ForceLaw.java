@@ -64,29 +64,29 @@ public abstract class ForceLaw implements Parsable {
     arBoundary    = getParamFromProp(properties,"arBoundary",arBoundary,0,100000.0);
   }
 
-  public Vector<Parsable> createCopiesFromParse(String instantiationValues) {
-    Vector<Parsable> laws = new Vector<Parsable>();
+  public Vector createCopiesFromParse(String instantiationValues) {
+    Vector laws = new Vector();
 
     Properties properties = new Properties();
     try {
-      //StringBufferInputStream sbis = new StringBufferInputStream(instantiationValues);
-      StringReader sr = new StringReader(instantiationValues);
+      StringBufferInputStream sbis = new StringBufferInputStream(instantiationValues);
+      //       StringReader sr = new StringReader(instantiationValues);
       //       BufferedInputStream bis = new BufferedInputStream(sr);
-      properties.load(sr);//sbis);
+      properties.load(sbis);
     }
     catch (Exception e) {
       System.out.println("Error while creating from the parse of " + getClass().getName() + ": " + e);
     }
 
-    fromParticleName = properties.getProperty("fromParticleName","dsmllab.apmodel.Particle");
+    fromParticleName = properties.getProperty("fromParticleName","ncarai.apmodel.Particle");
     String strFromSubtype = properties.getProperty("fromParticleSubtype","0");
-    toParticleName = properties.getProperty("toParticleName","dsmllab.apmodel.Particle");
+    toParticleName = properties.getProperty("toParticleName","ncarai.apmodel.Particle");
     String strToSubtype = properties.getProperty("toParticleSubtype","0");
 
     // The subtypes are specified numberically
     if ((strFromSubtype.compareTo("*")!=0)  && (strToSubtype.compareTo("*")!=0) ) {
-      fromParticleSubtype = (int)( Integer.parseInt(strFromSubtype) );
-      toParticleSubtype = (int)( Integer.parseInt(strToSubtype) );
+      fromParticleSubtype = (int)(new Double(strFromSubtype)).doubleValue();
+      toParticleSubtype = (int)(new Double(strToSubtype)).doubleValue();
       loadFromProperties(properties);
       laws.add(this);
     }
@@ -95,16 +95,16 @@ public abstract class ForceLaw implements Parsable {
     else if ((strFromSubtype.compareTo("*")==0)  && (strToSubtype.compareTo("*")!=0) ) {
       int subtypes[] = apparser.getAllRegisteredParticleSubtypes(fromParticleName);
       for (int i=0; i<subtypes.length; i++) {
-        ForceLaw fl = newForceLawInstance();
-              fromParticleSubtype = subtypes[i];
-              toParticleSubtype = (int)( Integer.parseInt(strToSubtype) );
+	ForceLaw fl = newForceLawInstance();
+        fromParticleSubtype = subtypes[i];
+        toParticleSubtype = (int)(new Double(strToSubtype)).doubleValue();
 
-        fl.fromParticleName = fromParticleName;
-        fl.fromParticleSubtype = fromParticleSubtype;
-        fl.toParticleName = toParticleName;
-        fl.toParticleSubtype = toParticleSubtype;
-        fl.loadFromProperties(properties);
-        laws.add(fl);
+	fl.fromParticleName = fromParticleName;
+	fl.fromParticleSubtype = fromParticleSubtype;
+	fl.toParticleName = toParticleName;
+	fl.toParticleSubtype = toParticleSubtype;
+	fl.loadFromProperties(properties);
+	laws.add(fl);
       }
     }
 
@@ -112,16 +112,16 @@ public abstract class ForceLaw implements Parsable {
     else if ((strFromSubtype.compareTo("*")!=0)  && (strToSubtype.compareTo("*")==0) ) {
       int subtypes[] = apparser.getAllRegisteredParticleSubtypes(toParticleName);
       for (int i=0; i<subtypes.length; i++) {
-        ForceLaw fl = newForceLawInstance();
-              fromParticleSubtype = (int)( Integer.parseInt(strFromSubtype) );
-              toParticleSubtype = subtypes[i];
+	ForceLaw fl = newForceLawInstance();
+        fromParticleSubtype = (int)(new Double(strFromSubtype)).doubleValue();
+        toParticleSubtype = subtypes[i];
 
-        fl.fromParticleName = fromParticleName;
-        fl.fromParticleSubtype = toParticleSubtype;
-        fl.toParticleName = toParticleName;
-        fl.toParticleSubtype = toParticleSubtype;
-        fl.loadFromProperties(properties);
-        laws.add(fl);
+	fl.fromParticleName = fromParticleName;
+	fl.fromParticleSubtype = toParticleSubtype;
+	fl.toParticleName = toParticleName;
+	fl.toParticleSubtype = toParticleSubtype;
+	fl.loadFromProperties(properties);
+	laws.add(fl);
       }
     }
 
@@ -164,7 +164,7 @@ public abstract class ForceLaw implements Parsable {
 
   protected double getParamFromProp(Properties properties, String key, 
                                     double defaultVal, double lb, double ub) {
-    double rawValue = ( Double.parseDouble(properties.getProperty(key,"" + defaultVal)) );
+    double rawValue = (new Double(properties.getProperty(key,"" + defaultVal))).doubleValue();
 
     if (rawValue < lb) rawValue = lb;
     if (rawValue > ub) rawValue = ub;

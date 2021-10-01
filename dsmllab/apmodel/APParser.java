@@ -14,7 +14,7 @@ public class APParser {
 
   protected APModel ap;
   protected ForceInteractionModel fim;
-  protected Vector<Parsable> loadedItemsList; // Particles and ForceLaws are "parsable"
+  protected Vector loadedItemsList;
 
   public APParser(APModel ap, ForceInteractionModel fim) {
     this.ap = ap;
@@ -38,34 +38,34 @@ public class APParser {
       else if (token == StreamTokenizer.TT_EOL) value = "\n";
 
       if (state == APS_PRE_BLOCK) {
-        if (token == StreamTokenizer.TT_EOL) value = "";
+	if (token == StreamTokenizer.TT_EOL) value = "";
 
-        else if (token == StreamTokenizer.TT_EOF)
-                throw new Exception("Error parsing AP params:  '{' expected but never found after block declaration " + blockName + ".");
+	else if (token == StreamTokenizer.TT_EOF)
+          throw new Exception("Error parsing AP params:  '{' expected but never found after block declaration " + blockName + ".");
 
-        else if (value.compareTo("}") == 0)
-                throw new Exception("Error parsing AP params:  unmatched '}' found in block " + blockName + ".");
+	else if (value.compareTo("}") == 0)
+          throw new Exception("Error parsing AP params:  unmatched '}' found in block " + blockName + ".");
 
-        else if (value.compareTo("{") == 0) state = APS_IN_BLOCK;
+	else if (value.compareTo("{") == 0) state = APS_IN_BLOCK;
 
-        else 
-                throw new Exception("Error parsing AP params:  '{' expected but never found after block declaration " + blockName + ".");
+	else 
+          throw new Exception("Error parsing AP params:  '{' expected but never found after block declaration " + blockName + ".");
       }
 
       else if (state == APS_IN_BLOCK) {
-        if (token == StreamTokenizer.TT_EOF) 
-                throw new Exception("Error parsing AP params:  '}' expected but never found in block " + blockName + ".");
+	if (token == StreamTokenizer.TT_EOF) 
+          throw new Exception("Error parsing AP params:  '}' expected but never found in block " + blockName + ".");
 
-              else if (value.compareTo("{") == 0) {level++; blockValue += value;}
+        else if (value.compareTo("{") == 0) {level++; blockValue += value;}
 
-              else if ( (value.compareTo("}") == 0) && (level == 0) ) state = APS_POST_BLOCK;
+        else if ( (value.compareTo("}") == 0) && (level == 0) ) state = APS_POST_BLOCK;
 
-              else if ( (value.compareTo("}") == 0) && (level > 0) ) {level--; blockValue += value;}
+        else if ( (value.compareTo("}") == 0) && (level > 0) ) {level--; blockValue += value;}
 
-              else if ( (value.compareTo("}") == 0) && (level < 0) ) 
-                throw new Exception("Error parsing AP params:  unmatched '}' found in block " + blockName + ".");
+        else if ( (value.compareTo("}") == 0) && (level < 0) ) 
+          throw new Exception("Error parsing AP params:  unmatched '}' found in block " + blockName + ".");
 
-        else blockValue += value;
+	else blockValue += value;
       }
     }
 
@@ -75,9 +75,9 @@ public class APParser {
 
   public void instantiateBlock(String blockName, String blockValue) {
     try{
-      Class<?> c = Class.forName(blockName);
-      Object o = c.getDeclaredConstructor().newInstance();
-      Vector<Parsable> items = ((Parsable)o).createCopiesFromParse(blockValue);
+      Class c = Class.forName(blockName);
+      Object o = c.newInstance();
+      Vector items = ((Parsable)o).createCopiesFromParse(blockValue);
       loadedItemsList.addAll(items);
     }
     catch (Exception e) {
@@ -90,17 +90,17 @@ public class APParser {
 
   protected int loadFromTokenizer(StreamTokenizer tokenizer) throws Exception {
     int numItems = 0;
-    loadedItemsList = new Vector<Parsable>();
+    loadedItemsList = new Vector();
 
     while (true) {
       int token = tokenizer.nextToken();
       if (token == StreamTokenizer.TT_EOF) break;
       else {
-        String blockName = tokenizer.sval;
-        String blockValues = getBlockValues(tokenizer,blockName);
-        instantiateBlock(blockName,blockValues);
-        tokenizer.eolIsSignificant(false);
-        numItems++;
+	String blockName = tokenizer.sval;
+	String blockValues = getBlockValues(tokenizer,blockName);
+	instantiateBlock(blockName,blockValues);
+	tokenizer.eolIsSignificant(false);
+	numItems++;
       }	
     }
 
@@ -146,8 +146,8 @@ public class APParser {
     for (int i=0; i<loadedItemsList.size(); i++) {
       Object item = loadedItemsList.get(i);
       if (item instanceof Particle) {
-        ((Parsable)item).registerWithModel(fim,ap);
-        ((Particle)item).getParticleSubtype();
+	((Parsable)item).registerWithModel(fim,ap);
+	((Particle)item).getParticleSubtype();
       }
     }
   }
@@ -157,7 +157,7 @@ public class APParser {
     for (int i=0; i<loadedItemsList.size(); i++) {
       Object item = loadedItemsList.get(i);
       if (item instanceof ForceLaw) 
- 	       ((Parsable)item).registerWithModel(fim,ap);
+	((Parsable)item).registerWithModel(fim,ap);
     }
   }
 
@@ -177,8 +177,8 @@ public class APParser {
     for (int i=0; i<loadedItemsList.size(); i++) {
       Object item = loadedItemsList.get(i);
       if (particleTypeName.compareToIgnoreCase(item.getClass().getName()) == 0) {
-        int currSubtype = ((Particle)item).getParticleSubtype();
-        if (currSubtype > maxParticleSubtype) maxParticleSubtype = currSubtype;
+	int currSubtype = ((Particle)item).getParticleSubtype();
+	if (currSubtype > maxParticleSubtype) maxParticleSubtype = currSubtype;
       }
     }
 
@@ -189,9 +189,9 @@ public class APParser {
     for (int i=0; i<loadedItemsList.size(); i++) {
       Object item = loadedItemsList.get(i);
       if (particleTypeName.compareToIgnoreCase(item.getClass().getName()) == 0) {
-        int currSubtype = ((Particle)item).getParticleSubtype();
-        if (!isSubtype[currSubtype]) subtypeCount++;
-        isSubtype[currSubtype] = true;
+	int currSubtype = ((Particle)item).getParticleSubtype();
+	if (!isSubtype[currSubtype]) subtypeCount++;
+	isSubtype[currSubtype] = true;
       }
     }
 
@@ -229,8 +229,8 @@ public class APParser {
     int nNumbers = 0;
     while (st.hasMoreTokens()) {
       try {
-        double x = ( Double.valueOf(st.nextToken()) );
-        nNumbers++;
+	double x = (new Double(st.nextToken())).doubleValue();
+	nNumbers++;
       }
       catch (java.lang.NumberFormatException e) {}
     }
@@ -241,8 +241,8 @@ public class APParser {
     int idx = 0;
     while (st.hasMoreTokens()) 
       try {
-        vect[idx] = ( Double.valueOf(st.nextToken()) );
-        idx++;
+	vect[idx] = (new Double(st.nextToken())).doubleValue();
+	idx++;
       }
       catch (java.lang.NumberFormatException e) {}
 

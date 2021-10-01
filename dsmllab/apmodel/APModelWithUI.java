@@ -83,7 +83,7 @@ public class APModelWithUI extends GUIState {
     super.init(c);
 
     // make the displayer
-    display = new Display2D(800,600,this);
+    display = new Display2D(800,600,this,1);
 
     displayFrame = display.createFrame();
     displayFrame.setTitle("Artificial Physicomimetics Display");

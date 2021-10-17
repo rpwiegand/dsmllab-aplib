@@ -10,7 +10,7 @@ import java.lang.Class;
 import java.util.*;
 import java.io.*;
 
-import ncarai.utilities.ExperimentParameters;
+import dsmllab.utilities.ExperimentParameters;
 
 
 /**
@@ -33,7 +33,7 @@ public class APExperimentParameters extends ExperimentParameters implements Seri
   public double massPower = 1.0;
 
   // System-level parmaeters
-  public String  apParamFileName = "apmodel.params"; 
+  public String  apParamFileName = "hex.params"; 
   public int numSteps = 1000;
   public int numSimTrials = 1;
   public boolean readFromParamFile = true;

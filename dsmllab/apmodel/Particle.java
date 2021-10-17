@@ -50,6 +50,7 @@ public class Particle extends SimplePortrayal2D implements Steppable, Parsable {
   public double mass = 1.0;
   public double maxVelocity = 2.0;
   public double diameter = 4.0;	
+  public double radius = 10.0;	
   public boolean useMomentum = true;
   public boolean useFriction = true;
   protected double friction = 0.15;
@@ -243,9 +244,13 @@ public class Particle extends SimplePortrayal2D implements Steppable, Parsable {
     Bag nearbyParticles = ap.environment.getObjectsWithinDistance(particleLocation,maxVision);
 
     if (nearbyParticles != null)
-      for (int i=0; i<nearbyParticles.numObjs; i++)
-	if (forceInteractionModel.isInteractionFromTo(this,(Particle)nearbyParticles.objs[i]))
+      for (int i=0; i<nearbyParticles.numObjs; i++) {
+        if (nearbyParticles.objs[i] instanceof Particle) {
+          if (forceInteractionModel.isInteractionFromTo(this,(Particle)nearbyParticles.objs[i]))
 	  ((Particle)nearbyParticles.objs[i]).applyForce(ap,this);
+        }
+      }
+	
   }//impartForce()
 
 
@@ -338,10 +343,12 @@ public class Particle extends SimplePortrayal2D implements Steppable, Parsable {
 
   public void step(final SimState state) {
     APModel ap = (APModel)state;
+    Surveillance s = (Surveillance)state;
 
     impartForce(ap);  
     updateVelocity(ap);
     updatePosition(ap);	
+    double num = s.targets_covered();
   }
 
 
@@ -352,8 +359,12 @@ public class Particle extends SimplePortrayal2D implements Steppable, Parsable {
     double diamx = info.draw.width * diameter;	    
     double diamy = info.draw.height * diameter;
 
+    // create a circle that represents the agent's sensor range (how far they can see)
+    Shape view = new Ellipse2D.Double(info.draw.x - radius, info.draw.y - radius, 2.0 * radius, 2.0 * radius);
+  
     graphics.setColor( particleColor );
     graphics.fillOval((int)(info.draw.x-diamx/2),(int)(info.draw.y-diamy/2),(int)(diamx),(int)(diamy));
+    graphics.draw(view);
   }//draw()
 	
 }

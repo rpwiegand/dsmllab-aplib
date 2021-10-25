@@ -18,38 +18,12 @@ dsmllab.apmodel.NewtonianForceLaw {
   massPower = 1.0
 }
 
-
-dsmllab.apmodel.Particle {
-  subtype = 1
-  number = 1
-  diameter = 10
-  color = { 255, 255, 255 }
-  friction = 1.0
-  mass = 100
-  setPosition=1.0
-  setx = 150
-  sety = 200
-} 
-
 dsmllab.apmodel.Particle {
   subtype = 2
   number = 30
-  diameter = 4
-  color = { 0, 170, 0 }
-  friction = 0.25
-  mass = 1.0
-}
-
-dsmllab.apmodel.NewtonianForceLaw {
-  fromParticleName = dsmllab.apmodel.Particle
-  fromParticleSubtype = 1
-  toParticleName = dsmllab.apmodel.Particle
-  toParticleSubtype = 2
-  effectRange = 350
-  arBoundary = 90
-  G = 600
-  distancePower = 2.0
-  massPower = 1.0
+  diameter = 3 
+  color = { 230, 0, 126 }
+  friction = 0.5
 }
 
 dsmllab.apmodel.NewtonianForceLaw {
@@ -57,10 +31,10 @@ dsmllab.apmodel.NewtonianForceLaw {
   fromParticleSubtype = 2
   toParticleName = dsmllab.apmodel.Particle
   toParticleSubtype = 2
-  effectRange = 250
-  arBoundary = 80
-  G = 600
-  distancePower = 3
+  effectRange = 1000 
+  arBoundary = 40
+  G = 100
+  distancePower = 2
   massPower = 1.0
 }
 
@@ -76,11 +50,37 @@ dsmllab.apmodel.Particle {
   sety = 210
 } 
 
+dsmllab.apmodel.Particle {
+  subtype = 1
+  number = 1
+  diameter = 10
+  color = { 255, 255, 255 }
+  friction = 1.0
+  mass = 100
+  setPosition=1.0
+  setx = 150
+  sety = 200
+} 
+
+
 dsmllab.apmodel.NewtonianForceLaw {
   fromParticleName = dsmllab.apmodel.Particle
   fromParticleSubtype = 3
   toParticleName = dsmllab.apmodel.Particle
   toParticleSubtype = 0
+  effectRange = 350
+  arBoundary = 10
+  G = 10
+  distancePower = 2.0
+  massPower = 1.0
+}
+
+
+dsmllab.apmodel.NewtonianForceLaw {
+  fromParticleName = dsmllab.apmodel.Particle
+  fromParticleSubtype = 1
+  toParticleName = dsmllab.apmodel.Particle
+  toParticleSubtype = 2
   effectRange = 350
   arBoundary = 10
   G = 10

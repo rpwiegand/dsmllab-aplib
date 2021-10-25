@@ -34,7 +34,7 @@ public class Surveillance extends APModel {
 
     // try to open the file that has the list of points in it
     try {
-      Scanner scanner = new Scanner(new File("points2.txt"));
+      Scanner scanner = new Scanner(new File("points.txt"));
 
       //the first number in the file is how many points we have
       n = scanner.nextInt();
@@ -93,7 +93,6 @@ public class Surveillance extends APModel {
 
           if (distance < thisPart.radius) {
             thisTargCovered = true;
-            
           }
 
         }

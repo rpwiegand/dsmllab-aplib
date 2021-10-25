@@ -45,6 +45,9 @@ public class Particle extends SimplePortrayal2D implements Steppable, Parsable {
   public Double2D lastLocation;
   public Double2D particleVelocity;
   public Double2D forceOnParticle;
+  public double setPosition;
+  public double setx;
+  public double sety;
 
   // Properties of the particle/particle
   public double mass = 1.0;
@@ -68,6 +71,9 @@ public class Particle extends SimplePortrayal2D implements Steppable, Parsable {
     this.particleSubtype = subtype;
     this.forceInteractionModel = forceInteractionModel;
     this.particleType = forceInteractionModel.registerParticle(this,this.particleSubtype);
+    this.setPosition = 0;
+    this.setx = 0;
+    this.sety = 0;
   }//constructor
 
 
@@ -90,6 +96,9 @@ public class Particle extends SimplePortrayal2D implements Steppable, Parsable {
     this.friction = getParamFromProp(properties,"friction",friction,0.0,1.0);
     this.diameter = getParamFromProp(properties,"diamter",diameter,0.01,1000.0);
     this.maxVelocity = getParamFromProp(properties,"maxVelocity",maxVelocity,0.0,100.0);
+    this.setPosition = getParamFromProp(properties,"setPosition",setPosition,0.0,1.0);
+    this.setx = getParamFromProp(properties,"setx",setx,0.0,500);
+    this.sety = getParamFromProp(properties,"sety",sety,0.0,500);
 
     String defColor = "{" + particleColor.getRed() + "," + particleColor.getGreen() + "," + particleColor.getBlue() + "}";
     double color[] = APParser.getDblArrayProp(properties,"color",defColor);
@@ -142,21 +151,30 @@ public class Particle extends SimplePortrayal2D implements Steppable, Parsable {
 
 
   public Double2D getInitialPosition(APModel ap) {
+
     Double2D loc = new Double2D(-500,-500);
-    int times = 0;
 
-    do {
-      loc = ap.getRandomInitialPos(0.35);
+    if (this.setPosition ==1.0) {
+      loc = new Double2D(this.setx,this.sety);
+    }
 
-      // Keep trying to place the particle until it is legal.  If you can't,
-      // give up with complaint.
-      times++;
-      if(times == 1000) {
-	System.err.println( "Cannot place particles. Exiting...." );
-	System.exit(1);
-      }
-    } while( !ap.acceptablePosition( this, loc ) );
-
+    else {
+      int times = 0;
+  
+      do {
+        loc = ap.getRandomInitialPos(0.35);
+  
+        // Keep trying to place the particle until it is legal.  If you can't,
+        // give up with complaint.
+        times++;
+        if(times == 1000) {
+    System.err.println( "Cannot place particles. Exiting...." );
+    System.exit(1);
+        }
+      } while( !ap.acceptablePosition( this, loc ) );
+  
+    }
+    
     return loc;
   }
 
@@ -349,6 +367,7 @@ public class Particle extends SimplePortrayal2D implements Steppable, Parsable {
     updateVelocity(ap);
     updatePosition(ap);	
     double num = s.targets_covered();
+    System.out.println(num);
   }
 
 

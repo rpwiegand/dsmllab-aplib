@@ -66,9 +66,10 @@ public class APParser {
           throw new Exception("Error parsing AP params:  unmatched '}' found in block " + blockName + ".");
 
 	else blockValue += value;
+  
       }
     }
-
+    //System.out.println("Block value = " + blockValue);
     return blockValue;
   }
 

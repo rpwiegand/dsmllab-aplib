@@ -33,7 +33,7 @@ public class APExperimentParameters extends ExperimentParameters implements Seri
   public double massPower = 1.0;
 
   // System-level parmaeters
-  public String  apParamFileName = "homog.params"; 
+  public String  apParamFileName = "homog2.params"; 
   public int numSteps = 1000;
   public int numSimTrials = 1;
   public boolean readFromParamFile = true;
@@ -66,7 +66,7 @@ public class APExperimentParameters extends ExperimentParameters implements Seri
       APModel.measures = new MeasureRegistry();
       for (int i=0; i<measureIDs.length; i++) {
 	try {
-	  Class c = Class.forName("ncarai.apmodel." + measureIDs[i]);
+	  Class c = Class.forName("dsmllab.apmodel." + measureIDs[i]);
 	  AbstractMeasure msr = (AbstractMeasure)c.newInstance();
           APModel.measures.registerMeasure(msr);
 	}//try

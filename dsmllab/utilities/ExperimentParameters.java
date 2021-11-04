@@ -84,11 +84,11 @@ public class ExperimentParameters implements Serializable
    *  ExperimentParameters because the subordinate classes will not
    *  have populated those variables with their defaults yet. */
   public void loadParameters() {
-    if (properties == null) readParameters();
+    //if (properties == null) readParameters();
     prePopulateHook();
-    populateAllFields();
+    //populateAllFields();
     postPopulateHook();
-    printAllFields();
+    //printAllFields();
     mIsLoaded = true;
   }
 

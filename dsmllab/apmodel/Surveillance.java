@@ -18,6 +18,7 @@ public class Surveillance extends APModel {
 
   public static Target[] targets;
   public static int n;
+  public double num_covered;
 
   public Surveillance (long seed) {
     super(seed);
@@ -70,6 +71,8 @@ public class Surveillance extends APModel {
     This function will return the percentage of targets that are within range of at least one agent
   */
   public double targets_covered() {
+
+
     int num_covered = 0;
 
     //grab all the objects from the environment
@@ -108,6 +111,7 @@ public class Surveillance extends APModel {
 
     return (double)num_covered/n;
   }//targets_covered()
+
 
    
 }

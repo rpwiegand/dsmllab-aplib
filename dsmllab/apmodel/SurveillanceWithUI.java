@@ -52,7 +52,12 @@ public class SurveillanceWithUI extends GUIState {
     
 
     public void load(SimState state) {
+        //System.out.println("1 Loading state here");
         super.load(state);
+        //Surveillance s = (Surveillance)state;
+        //double num = state.targets_covered();
+        //System.out.println(num);
+        System.out.println("2 Loading state here");
         setupPortrayals();
     }
         

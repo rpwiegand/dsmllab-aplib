@@ -112,6 +112,9 @@ public class APModel extends SimState {
     apParamsParser = new APParser(this,forceInteractionModel);
 
     apParamsParser.loadFromFile(expParams.apParamFileName);
+
+
+
   }
 
   /** Place particles, setup simulation, etc. */
@@ -154,6 +157,7 @@ public class APModel extends SimState {
     for (trials=0; trials < expParams.numSimTrials; trials++) {
       ap.start();
       for (long steps=0; steps < expParams.numSteps; steps++) {
+        System.out.println(steps);
 	if (DEBUG_LEVEL > 1) System.out.println("DEBUG: step=" + steps);
 	if (!ap.schedule.step(ap)) break;
       }
@@ -175,7 +179,7 @@ public class APModel extends SimState {
   /** Main method that allows the program to be run without the display.
    *  The command-line parameters are standard for MASON simulations.
    *  To get them, try: java sim.app.apmodel.APModel -help **/
-  public static void test(APModel ap, APExperimentParameters apExpParams) {
+  public static void test(Surveillance ap, APExperimentParameters apExpParams) {
     long trials = 0;
 
     ap.expParams = apExpParams;
@@ -195,12 +199,11 @@ public class APModel extends SimState {
 	ap.measures.reportAllCurrentTrial();
     }
 
-    System.out.println("MEASURE-RESULTS: " +
-		       (ap.fitness/(double)trials) + " : " +
-		       (ap.penalty/(double)trials)  + " : " +
-		       (ap.resolveFinalFitness() / (double)trials) );
+    double eval = ap.targets_covered();
+    System.out.println(eval);
+    //System.out.println("covered " + eval);
+    //dsmllab.apmodel.Particle
 
-    if (measures != null) measures.reportAllAggregates();
   }
 
 
@@ -210,7 +213,7 @@ public class APModel extends SimState {
       System.exit(1);
     }
 
-    APModel ap = new APModel(System.currentTimeMillis());
+    Surveillance ap = new Surveillance(System.currentTimeMillis());
     test(ap,new APExperimentParameters(args[0]));
   }
 }

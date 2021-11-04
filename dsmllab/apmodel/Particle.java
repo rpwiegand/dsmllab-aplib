@@ -361,13 +361,25 @@ public class Particle extends SimplePortrayal2D implements Steppable, Parsable {
 
   public void step(final SimState state) {
     APModel ap = (APModel)state;
-    Surveillance s = (Surveillance)state;
+    //Surveillance s = (Surveillance)state;
 
     impartForce(ap);  
     updateVelocity(ap);
     updatePosition(ap);	
-    double num = s.targets_covered();
-    System.out.println(num);
+    //double num = s.targets_covered();
+
+    
+    /*
+    try(FileWriter fw = new FileWriter("heterog.txt", true);
+    BufferedWriter bw = new BufferedWriter(fw);
+    PrintWriter out = new PrintWriter(bw))
+    {
+    out.println(num);
+    } catch (IOException e) {
+    //exception handling left as an exercise for the reader
+    }*/
+
+    //System.out.println(num);
   }
 
 

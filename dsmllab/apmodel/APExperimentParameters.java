@@ -33,7 +33,7 @@ public class APExperimentParameters extends ExperimentParameters implements Seri
   public double massPower = 1.0;
 
   // System-level parmaeters
-  public String  apParamFileName = "homog2.params"; 
+  public String  apParamFileName = "het.params"; 
   public int numSteps = 1000;
   public int numSimTrials = 1;
   public boolean readFromParamFile = true;
